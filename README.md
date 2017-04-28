@@ -18,9 +18,7 @@ The following parameters have to be specified for program execution:
 - segmentSizeFile: The relative part of the file containing the sizes of the segments of the video. The segment sizes have to be provided as a (n, m) matrix, with n being the number of representation levels and m being the total number of segments. A two-segment long, three representations containing segment size file would look like the following:
  
  1564 22394
- 
  1627 46529
- 
  1987 121606
 
 One possible execution of the program would be:
