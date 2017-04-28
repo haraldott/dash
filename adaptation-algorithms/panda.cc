@@ -85,16 +85,6 @@ PandaAlgorithm::GetNextRep (const int64_t segmentCounter, int64_t clientId)
   double bandwidthShare = (m_kappa * (m_omega - std::max (0.0, m_lastBandwidthShare - throughputMeasured + m_omega))) 
                                          * actualInterrequestTime + m_lastBandwidthShare;
   if (bandwidthShare < 0) bandwidthShare = 0;
-  if (clientId == 6/* && (segmentCounter == 110 || segmentCounter == 111)*/)
-    {
-      std::cerr << "segment No: " << segmentCounter << "\n";
-      std::cerr << "BANDWIDTH SHARE: \n";
-      std::cerr << "m_lastBandwidthShare: " << m_lastBandwidthShare << "\n";
-      std::cerr << "throughputMeasured: " << throughputMeasured << "\n";
-      std::cerr << "actualInterrequestTime: " << actualInterrequestTime << "\n";
-      std::cerr << "bandwidthShare: " << bandwidthShare << "\n\n";
-    }
-
   m_lastBandwidthShare = bandwidthShare; 
 
   double smoothBandwidthShare;
@@ -102,15 +92,6 @@ PandaAlgorithm::GetNextRep (const int64_t segmentCounter, int64_t clientId)
                                 * (m_lastSmoothBandwidthShare - bandwidthShare)) 
                                 * actualInterrequestTime) 
                                 + m_lastSmoothBandwidthShare;
-
-  if (clientId == 6 /*&& (segmentCounter == 110 || segmentCounter == 111)*/)
-    {
-      std::cerr << "SMOOTH BANDWIDTH SHARE: \n";
-      std::cerr << "m_lastSmoothBandwidthShare: " << m_lastSmoothBandwidthShare << "\n";
-      std::cerr << "bandwidthShare: " << bandwidthShare << "\n";
-      std::cerr << "actualInterrequestTime: " << actualInterrequestTime << "\n";
-      std::cerr << "smoothBandwidthShare: " << smoothBandwidthShare << "\n\n";
-    }
 
   m_lastSmoothBandwidthShare = smoothBandwidthShare;
 
@@ -140,21 +121,10 @@ PandaAlgorithm::GetNextRep (const int64_t segmentCounter, int64_t clientId)
   m_lastVideoIndex = videoIndex;
 
   // schedule next download request
-  if (clientId == 6 /*&& (segmentCounter == 110 || segmentCounter == 111)*/)
-    {
-      std::cerr << "targetInterrequestTime: \n";
-      std::cerr << "m_videoData.averageBitrate.at (videoIndex)) / 1e6: " << m_videoData.averageBitrate.at (videoIndex) / 1e6 << "\n";
-      std::cerr << "smoothBandwidthShare: " << smoothBandwidthShare << "\n";
-      std::cerr << "m_lastBuffer: " << m_lastBuffer << "\n";
-    }
-  
+ 
   double targetInterrequestTime = std::max (0.0, ((double) ((m_videoData.averageBitrate.at (videoIndex) * (m_videoData.segmentDuration / 1e6)) / 1e6) 
      / smoothBandwidthShare) + m_beta * (m_lastBuffer - m_bMin)); 
 
-  if (clientId == 6 /*&& (segmentCounter == 110 || segmentCounter == 111)*/)
-    {
-      std::cerr << "targetInterrequestTime: " << targetInterrequestTime << "\n\n---------\n";
-    }
   if (m_throughput.transmissionEnd.back () - m_throughput.transmissionRequested.back () < m_lastTargetInterrequestTime * 1e6)
     {
       delay = 1e6 * m_lastTargetInterrequestTime - (m_throughput.transmissionEnd.back () - m_throughput.transmissionRequested.back ());
