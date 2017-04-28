@@ -17,9 +17,9 @@ The following parameters have to be specified for program execution:
 - adaptationAlgo: The name of the adaptation algorithm the client uses for the simulation. The 'pre-installed' algorithms are tobasco, festive and panda.\
 - segmentSizeFile: The relative part of the file containing the sizes of the segments of the video. The segment sizes have to be provided as a (n, m) matrix, with n being the number of representation levels and m being the total number of segments. A two-segment long, three representations containing segment size file would look like the following:
  
- 1564 22394
- 1627 46529
- 1987 121606
+ 1564 22394  
+ 1627 46529  
+ 1987 121606  
 
 One possible execution of the program would be:
 ./waf --run="tcp-stream simulationId=1 numberOfClients=3 adaptationAlgo=panda segmentDuration=2000000 segmentSizeFile=segmentSizes.txt"
