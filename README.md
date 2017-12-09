@@ -22,8 +22,9 @@ The following parameters have to be specified for program execution:
  1987 121606  
 
 One possible execution of the program would be:
-./waf --run="tcp-stream simulationId=1 numberOfClients=3 adaptationAlgo=panda segmentDuration=2000000 segmentSizeFile=segmentSizes.txt"
-
+```bash
+./waf --run="tcp-stream --simulationId=1 --numberOfClients=3 --adaptationAlgo=panda --segmentDuration=2000000 --segmentSizeFile=segmentSizes.txt"
+```
 
 
 ## ADDING NEW ADAPTATION ALGORITHMS
