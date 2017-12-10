@@ -1,7 +1,7 @@
 /* -*- Mode:C++; c-file-style:"gnu"; indent-tabs-mode:nil; -*- */
 /*
  * Copyright 2016 Technische Universitaet Berlin
- * 
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 as
  * published by the Free Software Foundation;
@@ -47,7 +47,7 @@ TcpStreamServer::GetTypeId (void)
 {
   static TypeId tid = TypeId ("ns3::TcpStreamServer")
     .SetParent<Application> ()
-    .SetGroupName("Applications")
+    .SetGroupName ("Applications")
     .AddConstructor<TcpStreamServer> ()
     .AddAttribute ("Port", "Port on which we listen for incoming packets.",
                    UintegerValue (9),
@@ -62,7 +62,7 @@ TcpStreamServer::TcpStreamServer ()
   NS_LOG_FUNCTION (this);
 }
 
-TcpStreamServer::~TcpStreamServer()
+TcpStreamServer::~TcpStreamServer ()
 {
   NS_LOG_FUNCTION (this);
   m_socket = 0;
@@ -76,7 +76,7 @@ TcpStreamServer::DoDispose (void)
   Application::DoDispose ();
 }
 
-void 
+void
 TcpStreamServer::StartApplication (void)
 {
   NS_LOG_FUNCTION (this);
@@ -101,53 +101,53 @@ TcpStreamServer::StartApplication (void)
 
   // Accept connection requests from remote hosts.
   m_socket->SetAcceptCallback (MakeNullCallback<bool, Ptr< Socket >, const Address &> (),
-                             MakeCallback (&TcpStreamServer::HandleAccept,this));
+                               MakeCallback (&TcpStreamServer::HandleAccept,this));
   m_socket->SetCloseCallbacks (
     MakeCallback (&TcpStreamServer::HandlePeerClose, this),
     MakeCallback (&TcpStreamServer::HandlePeerError, this));
 }
 
-void 
+void
 TcpStreamServer::StopApplication ()
 {
   NS_LOG_FUNCTION (this);
 
-  if (m_socket != 0) 
+  if (m_socket != 0)
     {
       m_socket->Close ();
       m_socket->SetRecvCallback (MakeNullCallback<void, Ptr<Socket> > ());
     }
-  if (m_socket6 != 0) 
+  if (m_socket6 != 0)
     {
       m_socket6->Close ();
       m_socket6->SetRecvCallback (MakeNullCallback<void, Ptr<Socket> > ());
     }
 }
 
-void 
+void
 TcpStreamServer::HandleRead (Ptr<Socket> socket)
 {
   NS_LOG_FUNCTION (this << socket);
   Ptr<Packet> packet;
   Address from;
   packet = socket->RecvFrom (from);
-  int64_t packetSizeToReturn = GetCommand(packet);
+  int64_t packetSizeToReturn = GetCommand (packet);
   // these values will be accessible by the clients Address from.
   m_callbackData [from].currentTxBytes = 0;
   m_callbackData [from].packetSizeToReturn = packetSizeToReturn;
   m_callbackData [from].send = true;
 
-  HandleSend(socket, socket->GetTxAvailable ());
+  HandleSend (socket, socket->GetTxAvailable ());
 
 }
 
-void  
+void
 TcpStreamServer::HandleSend (Ptr<Socket> socket, uint32_t txSpace)
 {
   Address from;
   socket->GetPeerName (from);
   // look up values for the connected client and whose values are stored in from
-  if(m_callbackData [from].currentTxBytes == m_callbackData [from].packetSizeToReturn)
+  if (m_callbackData [from].currentTxBytes == m_callbackData [from].packetSizeToReturn)
     {
       m_callbackData [from].currentTxBytes = 0;
       m_callbackData [from].packetSizeToReturn = 0;
@@ -164,7 +164,7 @@ TcpStreamServer::HandleSend (Ptr<Socket> socket, uint32_t txSpace)
         {
           m_callbackData [from].currentTxBytes += amountSent;
         }
-      // We exit this part, when no bytes have been sent, as the send side buffer is full. 
+      // We exit this part, when no bytes have been sent, as the send side buffer is full.
       // The "HandleSend" callback will fire when some buffer space has freed up.
       else
         {
@@ -181,7 +181,7 @@ TcpStreamServer::HandleAccept (Ptr<Socket> s, const Address& from)
   cbd.currentTxBytes = 0;
   cbd.packetSizeToReturn = 0;
   cbd.send = false;
-  m_callbackData [from] = cbd;  
+  m_callbackData [from] = cbd;
   m_connectedClients.push_back (from);
   s->SetRecvCallback (MakeCallback (&TcpStreamServer::HandleRead, this));
   s->SetSendCallback ( MakeCallback (&TcpStreamServer::HandleSend, this));
@@ -195,19 +195,19 @@ TcpStreamServer::HandlePeerClose (Ptr<Socket> socket)
   socket->GetPeerName (from);
   for (std::vector<Address>::iterator it = m_connectedClients.begin (); it != m_connectedClients.end (); ++it)
     {
-      if (*it == from) 
+      if (*it == from)
         {
-          m_connectedClients.erase(it);
+          m_connectedClients.erase (it);
           // No more clients left in m_connectedClients, simulation is done.
           if (m_connectedClients.size () == 0)
             {
               Simulator::Stop ();
             }
           return;
-        } 
+        }
     }
 }
- 
+
 void
 TcpStreamServer::HandlePeerError (Ptr<Socket> socket)
 {
@@ -215,7 +215,7 @@ TcpStreamServer::HandlePeerError (Ptr<Socket> socket)
 }
 
 int64_t
-TcpStreamServer::GetCommand(Ptr<Packet> packet)
+TcpStreamServer::GetCommand (Ptr<Packet> packet)
 {
   int64_t packetSizeToReturn;
   uint8_t *buffer = new uint8_t [packet->GetSize ()];
@@ -224,7 +224,7 @@ TcpStreamServer::GetCommand(Ptr<Packet> packet)
   ss << buffer;
   std::string str;
   ss >> str;
-  std::stringstream convert(str);
+  std::stringstream convert (str);
   convert >> packetSizeToReturn;
   return packetSizeToReturn;
 }

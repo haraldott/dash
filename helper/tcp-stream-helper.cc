@@ -31,9 +31,9 @@ TcpStreamServerHelper::TcpStreamServerHelper (uint16_t port)
   SetAttribute ("Port", UintegerValue (port));
 }
 
-void 
+void
 TcpStreamServerHelper::SetAttribute (
-  std::string name, 
+  std::string name,
   const AttributeValue &value)
 {
   m_factory.Set (name, value);
@@ -94,7 +94,7 @@ TcpStreamClientHelper::TcpStreamClientHelper (Ipv6Address address, uint16_t port
   SetAttribute ("RemotePort", UintegerValue (port));
 }
 
-void 
+void
 TcpStreamClientHelper::SetAttribute (std::string name, const AttributeValue &value)
 {
   m_factory.Set (name, value);
@@ -104,7 +104,6 @@ ApplicationContainer
 TcpStreamClientHelper::Install (std::vector <std::pair <Ptr<Node>, std::string> > clients) const
 {
   ApplicationContainer apps;
-
   for (uint i = 0; i < clients.size (); i++)
     {
       apps.Add (InstallPriv (clients.at (i).first, clients.at (i).second, i));
@@ -120,7 +119,6 @@ TcpStreamClientHelper::InstallPriv (Ptr<Node> node, std::string algo, uint16_t c
   app->GetObject<TcpStreamClient> ()->SetAttribute ("ClientId", UintegerValue (clientId));
   app->GetObject<TcpStreamClient> ()->Initialise (algo, clientId);
   node->AddApplication (app);
-
   return app;
 }
 

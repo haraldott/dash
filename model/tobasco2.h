@@ -1,7 +1,7 @@
 /* -*- Mode:C++; c-file-style:"gnu"; indent-tabs-mode:nil; -*- */
 /*
  * Copyright 2016 Technische Universitaet Berlin
- * 
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 as
  * published by the Free Software Foundation;
@@ -30,13 +30,12 @@ namespace ns3 {
 class TobascoAlgorithm : public AdaptationAlgorithm
 {
 public:
-  
-TobascoAlgorithm (  const videoData &videoData,
-                    const playbackData & playbackData,
-                    const bufferData & bufferData,
-                    const throughputData & throughput);
+  TobascoAlgorithm (  const videoData &videoData,
+                      const playbackData & playbackData,
+                      const bufferData & bufferData,
+                      const throughputData & throughput);
 
-algorithmReply GetNextRep ( const int64_t segmentCounter , int64_t clientId);
+  algorithmReply GetNextRep ( const int64_t segmentCounter, int64_t clientId);
 
 private:
   /**
@@ -48,7 +47,7 @@ private:
   /**
    * Was the minimum buffer level observed during a time interval with duration delta_beta
    * for a given t_n, at every point of time t_i <= t_(i+1) for every t_i < t_n ?
-   * 
+   *
    * \return if true is returned, then the above described situation holds, else false
    *
    */
@@ -63,7 +62,7 @@ private:
   const int64_t m_bLow;
   const int64_t m_bHigh;
   const int64_t m_bOpt;
-  const int64_t m_deltaBeta; 
+  const int64_t m_deltaBeta;
   const int64_t m_deltaTime;
   const int64_t m_highestRepIndex;
   int64_t m_lastRepIndex;

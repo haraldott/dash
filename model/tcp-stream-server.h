@@ -1,7 +1,7 @@
 /* -*- Mode:C++; c-file-style:"gnu"; indent-tabs-mode:nil; -*- */
 /*
  * Copyright 2016 Technische Universitaet Berlin
- * 
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 as
  * published by the Free Software Foundation;
@@ -36,12 +36,12 @@ class Packet;
 class PropagationDelayModel;
 
 /**
- * \ingroup applications 
+ * \ingroup applications
  * \defgroup tcpStream TcpStream
  */
 
 /**
- * \ingroup tcpStream 
+ * \ingroup tcpStream
  * \brief data strucute the server uses to manage the following data for every client separately.
  */
 struct callbackData
@@ -57,7 +57,7 @@ struct callbackData
  *
  * Clients sent messages with the amount of bytes they want the server to return to them.
  */
-class TcpStreamServer : public Application 
+class TcpStreamServer : public Application
 {
 public:
   /**
@@ -72,36 +72,35 @@ protected:
   virtual void DoDispose (void);
 
 private:
-
   virtual void StartApplication (void);
   virtual void StopApplication (void);
 
   /**
    * \brief Handle a packet reception, and set SendCallback to HandlSend.
    *
-   * This function is called by lower layers. The received packet's content 
+   * This function is called by lower layers. The received packet's content
    * gets deserialized by GetCommand (Ptr<Packet> packet). If the packets content
    * contains a string composed of an int with
    * value n, then n bytes will be sent back to the sender.
    *
    * \param socket the socket the packet was received to.
-   */ 
+   */
   void HandleRead (Ptr<Socket> socket);
 
   /**
    * \brief send packetSizeToReturn bytes to the client connected to socket.
    *
-   * This function is called once by HandleRead (Ptr<Socket> socket) after a send of n (i.e. 
-   * a segment of n) bytes was requested by the client. If n > socket->GetTxAvailable (), 
+   * This function is called once by HandleRead (Ptr<Socket> socket) after a send of n (i.e.
+   * a segment of n) bytes was requested by the client. If n > socket->GetTxAvailable (),
    * (this is the current space available in the buffer in bytes), then socket->GetTxAvailable () bytes
-   * are written into the buffer. This function will get called again through the SendCallback when 
+   * are written into the buffer. This function will get called again through the SendCallback when
    * space in the buffer has freed up.
-   * The amount of sent bytes for this particular segment and for the client connected with 
-   * this socket is stored in m_callbackData [from].currentTxBytes, so the server can access the already sent bytes 
-   * through the value of from, which is provided by socket, because there is a socket instance for every connected client. 
-   * m_callbackData [from].send indicates for the client with address from that the server has not yet sent 
+   * The amount of sent bytes for this particular segment and for the client connected with
+   * this socket is stored in m_callbackData [from].currentTxBytes, so the server can access the already sent bytes
+   * through the value of from, which is provided by socket, because there is a socket instance for every connected client.
+   * m_callbackData [from].send indicates for the client with address from that the server has not yet sent
    * m_callbackData [from].packetSizeToReturn bytes. When the number of bytes should be sent is
-   * reached, m_callbackData [from].send will be set to false and the server stops sending 
+   * reached, m_callbackData [from].send will be set to false and the server stops sending
    * bytes to the client until he requests another segment.
    *
    * \param socket the socket the request for a segment was received to and where the server will send packetSizeToReturn bytes to.
@@ -118,7 +117,7 @@ private:
   void HandlePeerClose (Ptr<Socket> socket);
   void HandlePeerError (Ptr<Socket> socket);
 
-  /** 
+  /**
    * \brief Deserialize what the client has sent us.
    * \param packet the data the client has sent us
    * \return the deserialized packet content as a string

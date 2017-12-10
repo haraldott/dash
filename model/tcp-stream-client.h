@@ -1,7 +1,7 @@
 /* -*- Mode:C++; c-file-style:"gnu"; indent-tabs-mode:nil; -*- */
 /*
  * Copyright 2016 Technische Universitaet Berlin
- * 
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 as
  * published by the Free Software Foundation;
@@ -44,7 +44,7 @@ class Packet;
  *
  * Every segment size request sent is returned by the server and received here.
  */
-class TcpStreamClient : public Application 
+class TcpStreamClient : public Application
 {
 
 public:
@@ -58,7 +58,7 @@ public:
 
   /**
    * \brief Set the adaptation algorithm which this client instance should use.
-   * 
+   *
    * A new adaptation algorithm object is created, by calling a constructor of an existing subclass of
    * AdaptationAlgorithm.
    *
@@ -89,17 +89,22 @@ protected:
   virtual void DoDispose (void);
 
 private:
-
   /**
    * \brief This enum is used to define the states of the state machine which controls the behaviour of the client.
    */
-  enum controllerState {initial, downloading, downloadingPlaying, playing, terminal};
+  enum controllerState
+  {
+    initial, downloading, downloadingPlaying, playing, terminal
+  };
   controllerState state;
 
   /**
    * \brief This enum is used to define the controller events of the state machine which controls the behaviour of the client.
    */
-  enum controllerEvent {downloadFinished, playbackFinished, irdFinished, init};
+  enum controllerEvent
+  {
+    downloadFinished, playbackFinished, irdFinished, init
+  };
   AdaptationAlgorithm *algo;
 
   virtual void StartApplication (void);
@@ -126,19 +131,21 @@ private:
    */
   void Controller (controllerEvent action);
   /**
-   * Set the data fill of the packet (what is actually sent as data to the server with m_data) to 
+   * Set the data fill of the packet (what is actually sent as data to the server with m_data) to
    * the zero-terminated contents of the T & message string.
    *
    * \param message The amount of bytes the server shall send as a respond.
    */
-  template <typename T> void PreparePacket (T & message);
+  template <typename T>
+  void PreparePacket (T & message);
   /**
    * \brief Send a packet to the server.
    *
-   * Before a packet is sent, PreparePacket( T & message) is called to fill the packet with 
+   * Before a packet is sent, PreparePacket( T & message) is called to fill the packet with
    * a string, containig the number of bytes requested from the server.
    */
-  template <typename T> void Send (T & message);
+  template <typename T>
+  void Send (T & message);
   /**
    * \brief Handle a packet reception.
    *
@@ -152,7 +159,7 @@ private:
   /**
    * \brief triggered by SetConnectCallback if a connection to a host was established.
    */
-  void ConnectionSucceeded (Ptr<Socket> socket);  
+  void ConnectionSucceeded (Ptr<Socket> socket);
   /**
    * \brief triggered by SetConnectCallback if a connection to a host could not be established.
    */
@@ -173,10 +180,10 @@ private:
    * \brief Controls / simulates playback process
    *
    * Gets called by a timer, when the simulated playback of a segment is finished.
-   * If m_segmentsInBuffer > 0, then m_segmentsInBuffer is decremented and m_currentPlaybackIndex 
-   * is incremented. Also, if there was a buffer underrun before, m_bufferUnderrun is set to false 
-   * and the end of a buffer underrun is logged. If m_segmentsInBuffer == 0, a buffer underrun is 
-   * registered by writing the event in the bufferUnderrun logfile and m_bufferUnderrun is set to true. 
+   * If m_segmentsInBuffer > 0, then m_segmentsInBuffer is decremented and m_currentPlaybackIndex
+   * is incremented. Also, if there was a buffer underrun before, m_bufferUnderrun is set to false
+   * and the end of a buffer underrun is logged. If m_segmentsInBuffer == 0, a buffer underrun is
+   * registered by writing the event in the bufferUnderrun logfile and m_bufferUnderrun is set to true.
    *
    * \return true if there is a buffer underrun
    */
@@ -185,7 +192,7 @@ private:
    * \brief Request the next representation index from algorithm.
    *
    * The client requests the next representation index by calling algo->GetNextRep (int64_t m_segmentCounter), which is the interface between an adaptation algorithm
-   * and a client, specifying the current segment index as an argument. 
+   * and a client, specifying the current segment index as an argument.
    * The algorithm returns an algorithmReply struct, the received values are stored in local variables for logging purposes.
    */
   void RequestRepIndex ();
@@ -203,7 +210,7 @@ private:
   /*
    * \brief Log buffer level
    *
-   * Logging the arrival time of fully downloaded segment and logging the buffer level by 
+   * Logging the arrival time of fully downloaded segment and logging the buffer level by
    * adding m_segmentDuration on the buffer level.
    *
    * - point in time when segment fully downloaded
@@ -227,9 +234,9 @@ private:
    */
   void LogPlayback ();
   /*
-   * \brief Log information about adaptation algorithm. 
-   *  
-   * - current segment index 
+   * \brief Log information about adaptation algorithm.
+   *
+   * - current segment index
    * - the point in time when the decision in the algorithm was made which representation to download next
    * - the case in which the decision was made which representation to download next
    * - the case in which the decision was made if the next download should be delayed
@@ -239,7 +246,7 @@ private:
   /*
    * \brief Open log output files with streams.
    *
-   * The output streams defined in TcpStreamClient are opened, 
+   * The output streams defined in TcpStreamClient are opened,
    * and log files containing the used adaptation algorithm are created for output.
    */
   void InitializeLogFiles (std::string simulationId, std::string clientId, std::string numberOfClients);
@@ -274,7 +281,7 @@ private:
   std::ofstream playbackLog; //!< Output stream for logging playback information
   std::ofstream bufferLog; //!< Output stream for logging buffer course
   std::ofstream throughputLog; //!< Output stream for logging throughput information
-  std::ofstream bufferUnderrunLog; //!< Output stream for logging starting and ending of buffer underruns 
+  std::ofstream bufferUnderrunLog; //!< Output stream for logging starting and ending of buffer underruns
 
   uint64_t m_downloadRequestSent; //!< Logging the point in time in microseconds when a download request was sent to the server
 

@@ -35,6 +35,7 @@
 #include <sys/types.h>
 #include <errno.h>
 #include "ns3/flow-monitor-module.h"
+#include "ns3/tcp-stream-helper.h"
 
 template <typename T>
 std::string ToString(T val)
@@ -48,7 +49,7 @@ using namespace ns3;
 
 NS_LOG_COMPONENT_DEFINE ("TcpStreamExample");
 
-int 
+int
 main (int argc, char *argv[])
 {
 //
@@ -100,12 +101,12 @@ main (int argc, char *argv[])
   wifiPhy.Set ("TxPowerEnd", DoubleValue (20.0));//
   wifiPhy.Set ("TxPowerLevels", UintegerValue (1));//
   wifiPhy.Set ("TxGain", DoubleValue (0));//
-  wifiPhy.Set ("RxGain", DoubleValue (0));// 
+  wifiPhy.Set ("RxGain", DoubleValue (0));//
   wifiPhy.SetErrorRateModel ("ns3::YansErrorRateModel");//
   wifiPhy.SetChannel (wifiChannel.Create ());
   wifiPhy.Set("ShortGuardEnabled", BooleanValue(shortGuardInterval));
-  wifiPhy.Set ("TxAntennas", UintegerValue (4));
-  wifiPhy.Set ("RxAntennas", UintegerValue (4));
+  wifiPhy.Set ("Antennas", UintegerValue (4));
+  // wifiPhy.Set ("RxAntennas", UintegerValue (4));
 
   /* Create Nodes */
   NodeContainer networkNodes;
@@ -133,12 +134,12 @@ main (int argc, char *argv[])
 
   /* Set up WAN link between server node and access point*/
   PointToPointHelper p2p;
-  p2p.SetDeviceAttribute ("DataRate", StringValue ("100000kb/s")); // This must not be more than the maximum throughput in 802.11n  
+  p2p.SetDeviceAttribute ("DataRate", StringValue ("100000kb/s")); // This must not be more than the maximum throughput in 802.11n
   p2p.SetDeviceAttribute ("Mtu", UintegerValue (1500));
   p2p.SetChannelAttribute ("Delay", StringValue ("45ms"));
   NetDeviceContainer wanIpDevices;
   wanIpDevices = p2p.Install (serverNode, apNode);
-  
+
   /* create MAC layers */
   WifiMacHelper wifiMac;
   /* WLAN configuration */
@@ -159,7 +160,7 @@ main (int argc, char *argv[])
 
 
   Config::Set ("/NodeList/*/DeviceList/*/$ns3::WifiNetDevice/Phy/ChannelWidth", UintegerValue (40));
-  
+
   /* Determin WLAN devices (AP and STAs) */
   NetDeviceContainer wlanDevices;
   wlanDevices.Add (staDevices);
@@ -171,7 +172,7 @@ main (int argc, char *argv[])
 
   /* Assign IP addresses */
   Ipv4AddressHelper address;
-  
+
   /* IPs for WAN */
   address.SetBase ("76.1.1.0", "255.255.255.0");
   Ipv4InterfaceContainer wanInterface = address.Assign (wanIpDevices);
@@ -191,19 +192,19 @@ main (int argc, char *argv[])
 //////////////////////////////////////////////////////////////////////////////////////////////////
   double roomHeight = 3;
   double roomLength = 6;
-  double roomWidth = 5; 
+  double roomWidth = 5;
   uint32_t xRooms = 8;
   uint32_t yRooms = 3;
   uint32_t nFloors = 6;
 
   Ptr<Building> b = CreateObject <Building> ();
-  b->SetBoundaries (Box ( 0.0, xRooms * roomWidth, 
-                          0.0, yRooms * roomLength, 
+  b->SetBoundaries (Box ( 0.0, xRooms * roomWidth,
+                          0.0, yRooms * roomLength,
                           0.0, nFloors * roomHeight));
   b->SetBuildingType (Building::Office);
   b->SetExtWallsType (Building::ConcreteWithWindows);
   b->SetNFloors (6);
-  b->SetNRoomsX (8);  
+  b->SetNRoomsX (8);
   b->SetNRoomsY (3);
 
   Vector posAp = Vector ( 1.0, 1.0, 1.0);
@@ -228,7 +229,7 @@ main (int argc, char *argv[])
   mkdir (tobascoDir, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
   const char * dir = ("mylogs/" + adaptationAlgo + "/" + ToString (numberOfClients) + "/").c_str();
   mkdir(dir, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
-  
+
   std::ofstream clientPosLog;
   std::string clientPos = "mylogs/" + adaptationAlgo + "/" + ToString (numberOfClients) + "/" + "sim" + ToString (simulationId) + "_"  + "clientPos.txt";
   clientPosLog.open (clientPos.c_str());
@@ -245,7 +246,7 @@ main (int argc, char *argv[])
       clientPosLog.flush ();
     }
 
-    
+
   MobilityHelper mobility;
   mobility.SetPositionAllocator (positionAlloc);
   mobility.SetMobilityModel ("ns3::ConstantPositionMobilityModel");
@@ -255,12 +256,12 @@ main (int argc, char *argv[])
   BuildingsHelper::MakeMobilityModelConsistent ();
 
   // if logging of the packets between AP---Server or AP and the STAs is wanted, these two lines can be activated
-  
+
   // p2p.EnablePcapAll ("p2p-", true);
   // wifiPhy.EnablePcapAll ("wifi-", true);
 
 
-    
+
   /* Install TCP Receiver on the access point */
   TcpStreamServerHelper serverHelper (port);
   ApplicationContainer serverApp = serverHelper.Install (serverNode);
@@ -278,7 +279,7 @@ main (int argc, char *argv[])
       clientApps.Get (i)->SetStartTime (Seconds (startTime));
     }
 
-  
+
   NS_LOG_INFO ("Run Simulation.");
   NS_LOG_INFO ("Sim: " << simulationId << "Clients: " << numberOfClients);
   Simulator::Run ();

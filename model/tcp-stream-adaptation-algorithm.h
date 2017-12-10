@@ -1,7 +1,7 @@
 /* -*- Mode:C++; c-file-style:"gnu"; indent-tabs-mode:nil; -*- */
 /*
  * Copyright 2016 Technische Universitaet Berlin
- * 
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 as
  * published by the Free Software Foundation;
@@ -27,7 +27,7 @@
 #include <stdint.h>
 #include "tcp-stream-interface.h"
 #include <stdexcept>
-#include <assert.h> 
+#include <assert.h>
 #include <math.h>
 #include <numeric>
 #include <algorithm>
@@ -54,8 +54,8 @@ public:
    *
    * \return struct containig the index of next representation to be downloaded and the inter-request delay.
    */
-  virtual algorithmReply GetNextRep ( const int64_t segmentCounter , int64_t clientId) = 0;
-  
+  virtual algorithmReply GetNextRep ( const int64_t segmentCounter, int64_t clientId) = 0;
+
 protected:
   const videoData & m_videoData;
   const bufferData & m_bufferData;

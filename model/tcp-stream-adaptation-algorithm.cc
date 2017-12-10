@@ -1,7 +1,7 @@
 /* -*- Mode:C++; c-file-style:"gnu"; indent-tabs-mode:nil; -*- */
 /*
  * Copyright 2016 Technische Universitaet Berlin
- * 
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 as
  * published by the Free Software Foundation;
@@ -31,6 +31,7 @@ AdaptationAlgorithm::AdaptationAlgorithm (  const videoData & videoData,
   m_bufferData (bufferData),
   m_throughput (throughput),
   m_playbackData (playbackData)
-{}
+{
+}
 
 } // namespace ns3
