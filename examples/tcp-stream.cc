@@ -36,6 +36,7 @@
 #include <errno.h>
 #include "ns3/flow-monitor-module.h"
 #include "ns3/tcp-stream-helper.h"
+#include "ns3/tcp-stream-interface.h"
 
 template <typename T>
 std::string ToString(T val)
@@ -223,15 +224,15 @@ main (int argc, char *argv[])
   randPosAlloc->AssignStreams (simulationId);
 
   // create folder so we can log the positions of the clients
-  const char * mylogsDir = ("mylogs/");
+  const char * mylogsDir = dashLogDirectory.c_str();
   mkdir (mylogsDir, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
-  const char * tobascoDir = ("mylogs/" + adaptationAlgo).c_str ();
+  const char * tobascoDir = (dashLogDirectory + adaptationAlgo).c_str ();
   mkdir (tobascoDir, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
-  const char * dir = ("mylogs/" + adaptationAlgo + "/" + ToString (numberOfClients) + "/").c_str();
+  const char * dir = (dashLogDirectory + adaptationAlgo + "/" + ToString (numberOfClients) + "/").c_str();
   mkdir(dir, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
 
   std::ofstream clientPosLog;
-  std::string clientPos = "mylogs/" + adaptationAlgo + "/" + ToString (numberOfClients) + "/" + "sim" + ToString (simulationId) + "_"  + "clientPos.txt";
+  std::string clientPos = dashLogDirectory + "/" + adaptationAlgo + "/" + ToString (numberOfClients) + "/" + "sim" + ToString (simulationId) + "_"  + "clientPos.txt";
   clientPosLog.open (clientPos.c_str());
   NS_ASSERT_MSG (clientPosLog.is_open(), "Couldn't open clientPosLog file");
 

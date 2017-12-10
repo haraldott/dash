@@ -18,8 +18,9 @@
 #ifndef TCP_STREAM_INTERFACE_H
 #define TCP_STREAM_INTERFACE_H
 
-
 namespace ns3 {
+
+std::string const dashLogDirectory = "dash-log-files/";
 
 /*! \class algorithmReply tcp-stream-interface.h "model/tcp-stream-interface.h"
  *  \ingroup tcpStream
