@@ -4,18 +4,15 @@ A simulation model for HTTP-based adaptive streaming applications
 If you use the model, please reference "Simulation Framework for HTTP-Based Adaptive Streaming Applications" by Harald Ott, Konstantin Miller, and Adam Wolisz, 2017
 
 ## NEEDED FILES
-1. Copy tcp-stream-helper.{cc, h} to src/applications/helper/
-2. Copy the adaptation-algorithm/ folder to src/applications/model/
-3. Copy the wscript file to src/applications/ and replace it with the original one or, alternatively add the newly added files to the list of files.
-3. Copy tcp-stream.cc to scratch/
+Just drop the repository into the contrib/ folder of ns-3 (only works with ns version >= 3.27)
 
 ## PROGRAM EXECUTION
 The following parameters have to be specified for program execution:
 - simulationId: The Id of this simulation, to distinguish it from others, with same algorithm and number of clients, for logging purposes.
 - numberOfClients: The number of streaming clients used for this simulation.
 - segmentDuration: The duration of a segment in microseconds.
-- adaptationAlgo: The name of the adaptation algorithm the client uses for the simulation. The 'pre-installed' algorithms are tobasco, festive and panda.\
-- segmentSizeFile: The relative part of the file containing the sizes of the segments of the video. The segment sizes have to be provided as a (n, m) matrix, with n being the number of representation levels and m being the total number of segments. A two-segment long, three representations containing segment size file would look like the following:
+- adaptationAlgo: The name of the adaptation algorithm the client uses for the simulation. The 'pre-installed' algorithms are tobasco, festive and panda.
+- segmentSizeFile: The relative path (from the ns-3.x/ folder) of the file containing the sizes of the segments of the video. The segment sizes have to be provided as a (n, m) matrix, with n being the number of representation levels and m being the total number of segments. A two-segment long, three representations containing segment size file would look like the following:
 
  1564 22394  
  1627 46529  
@@ -23,7 +20,7 @@ The following parameters have to be specified for program execution:
 
 One possible execution of the program would be:
 ```bash
-./waf --run="tcp-stream --simulationId=1 --numberOfClients=3 --adaptationAlgo=panda --segmentDuration=2000000 --segmentSizeFile=segmentSizes.txt"
+./waf --run="tcp-stream --simulationId=1 --numberOfClients=3 --adaptationAlgo=panda --segmentDuration=2000000 --segmentSizeFile=contrib/dash/segmentSizes.txt"
 ```
 
 
