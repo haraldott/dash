@@ -13,10 +13,10 @@ If you use the model, please reference "Simulation Framework for HTTP-Based Adap
 The following parameters have to be specified for program execution:
 - simulationId: The Id of this simulation, to distinguish it from others, with same algorithm and number of clients, for logging purposes.
 - numberOfClients: The number of streaming clients used for this simulation.
-- segmentDuration: The duration of a segment in nanoseconds.
+- segmentDuration: The duration of a segment in microseconds.
 - adaptationAlgo: The name of the adaptation algorithm the client uses for the simulation. The 'pre-installed' algorithms are tobasco, festive and panda.\
 - segmentSizeFile: The relative part of the file containing the sizes of the segments of the video. The segment sizes have to be provided as a (n, m) matrix, with n being the number of representation levels and m being the total number of segments. A two-segment long, three representations containing segment size file would look like the following:
- 
+
  1564 22394  
  1627 46529  
  1987 121606  
@@ -66,7 +66,7 @@ int64_t decisionCase; // indicate in which part of the adaptation algorithm's co
 int64_t delayDecisionCase; // indicate in which part of the adaptation algorithm's code the decision was made, how much time in microsends to wait until the segment shall be requested from server, only for logging purposes
 ```
 
-Next, it is necessary to include the following lines to the top of the source file. 
+Next, it is necessary to include the following lines to the top of the source file.
 
 ```c++
 NS_LOG_COMPONENT_DEFINE ("NewAdaptationAlgorithm");
@@ -79,7 +79,7 @@ It is obligatory to inherit from AdaptationAlgorithm and implement the algorithm
 if (algorithm == "tobasco")
   {
     algo = new TobascoAlgorithm (m_videoData, m_playbackData, m_bufferData, m_throughput);
-  } 
+  }
 else if (algorithm == "panda")
   {
     algo = new PandaAlgorithm (m_videoData, m_playbackData, m_bufferData, m_throughput);
@@ -88,7 +88,7 @@ else if (algorithm == "festive")
   {
     algo = new FestiveAlgorithm (m_videoData, m_playbackData, m_bufferData, m_throughput);
   }
-else 
+else
   {
     // Stop program
   }

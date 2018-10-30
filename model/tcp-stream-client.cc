@@ -186,7 +186,7 @@ TcpStreamClient::GetTypeId (void)
                    MakeUintegerAccessor (&TcpStreamClient::m_peerPort),
                    MakeUintegerChecker<uint16_t> ())
     .AddAttribute ("SegmentDuration",
-                   "The duration of a segment in nanoseconds",
+                   "The duration of a segment in microseconds",
                    UintegerValue (2000000),
                    MakeUintegerAccessor (&TcpStreamClient::m_segmentDuration),
                    MakeUintegerChecker<uint64_t> ())
@@ -251,7 +251,6 @@ TcpStreamClient::Initialise (std::string algorithm, uint16_t clientId)
     }
   else if (algorithm == "panda")
     {
-      printf("8\n");
       algo = new PandaAlgorithm (m_videoData, m_playbackData, m_bufferData, m_throughput);
     }
   else if (algorithm == "festive")
