@@ -4,7 +4,7 @@ A simulation model for HTTP-based adaptive streaming applications
 If you use the model, please reference "Simulation Framework for HTTP-Based Adaptive Streaming Applications" by Harald Ott, Konstantin Miller, and Adam Wolisz, 2017
 
 ## NEEDED FILES
-Just drop the repository into the contrib/ folder of ns-3 (only works with ns version >= 3.27)
+Just drop the repository into the contrib/ folder of ns-3 (only works with ns version between 3.27 and 3.30)
 
 Since I've already received a lot of questions about errors that arise from this mistake:
 
