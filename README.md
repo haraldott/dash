@@ -6,6 +6,12 @@ If you use the model, please reference "Simulation Framework for HTTP-Based Adap
 ## NEEDED FILES
 Just drop the repository into the contrib/ folder of ns-3 (only works with ns version >= 3.27)
 
+Since I've already received a lot of questions about errors that arise from this mistake:
+
+![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) !! DO NOT RENAME THE FOLDER !! ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) 
+
+Its name needs to remain 'dash'
+
 ## PROGRAM EXECUTION
 The following parameters have to be specified for program execution:
 - simulationId: The Id of this simulation, to distinguish it from others, with same algorithm and number of clients, for logging purposes.
