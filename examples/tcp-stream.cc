@@ -87,16 +87,17 @@ main (int argc, char *argv[])
   Config::SetDefault("ns3::TcpSocket::RcvBufSize", UintegerValue (524288));
 
   WifiHelper wifiHelper;
-  wifiHelper.SetStandard (WIFI_PHY_STANDARD_80211n_5GHZ);
+  // WIFI_PHY_STANDARD_80211n_5GHZ  ---->>>> giving error !!!
+  wifiHelper.SetStandard (WIFI_STANDARD_80211n);
   wifiHelper.SetRemoteStationManager ("ns3::MinstrelHtWifiManager");//
-
+  
 
   /* Set up Legacy Channel */
   YansWifiChannelHelper wifiChannel = YansWifiChannelHelper::Default ();
   // We do not set an explicit propagation loss model here, we just use the default ones that get applied with the building model.
 
   /* Setup Physical Layer */
-  YansWifiPhyHelper wifiPhy = YansWifiPhyHelper::Default ();
+  YansWifiPhyHelper wifiPhy = YansWifiPhyHelper ();    // CHANGED FROM ::default to () 
   wifiPhy.SetPcapDataLinkType (YansWifiPhyHelper::DLT_IEEE802_11_RADIO);
   wifiPhy.Set ("TxPowerStart", DoubleValue (20.0));//
   wifiPhy.Set ("TxPowerEnd", DoubleValue (20.0));//
@@ -256,7 +257,7 @@ main (int argc, char *argv[])
   // install all of the nodes that have been added to positionAlloc to the mobility model
   mobility.Install (networkNodes);
   BuildingsHelper::Install (networkNodes); // networkNodes contains all nodes, stations and ap
-  BuildingsHelper::MakeMobilityModelConsistent ();
+  // BuildingsHelper::MakeMobilityModelConsistent ();
 
   // if logging of the packets between AP---Server or AP and the STAs is wanted, these two lines can be activated
 
