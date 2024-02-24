@@ -1,0 +1,13 @@
+
+build_lib_example(
+    NAME tcp-stream
+    SOURCE_FILES tcp-stream.cc
+    LIBRARIES_TO_LINK 
+    ${libdash}
+    ${libwifi}
+    ${libinternet}
+    ${libpoint-to-point}
+    ${libapplications}
+    ${libbuildings}
+)
+
